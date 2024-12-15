@@ -1,0 +1,667 @@
+/* CSS Variables and Root Styles
+-------------------------------------------------- */
+:root {
+  /* Light Theme Variables */
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
+  --card-bg: #ffffff;
+  --completed-color: #9ca3af;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  /* Light theme background */
+  --bg-gradient-1: #4338ca;
+  --bg-gradient-2: #6366f1;
+  --bg-gradient-3: #818cf8;
+  --bg-overlay-1: rgba(99, 102, 241, 0.15);
+  --bg-overlay-2: rgba(67, 56, 202, 0.15);
+  --task-bg: #f9fafb;
+  --subtitle-color: #6b7280;
+  --delete-color: #ef4444;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --priority-high: #ef4444;
+  --priority-medium: #f59e0b;
+  --priority-low: #10b981;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme Variables */
+  --text-color: #e5e7eb;
+  --border-color: #374151;
+  --card-bg: #1f2937;
+  --completed-color: #6b7280;
+  /* Dark theme background */
+  --bg-gradient-1: #0f172a;
+  --bg-gradient-2: #1e1b4b;
+  --bg-gradient-3: #312e81;
+  --bg-overlay-1: rgba(99, 102, 241, 0.05);
+  --bg-overlay-2: rgba(67, 56, 202, 0.05);
+  --task-bg: #374151;
+  --subtitle-color: #9ca3af;
+  --delete-color: #dc2626;
+  --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.1);
+  --shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
+  --priority-high: #ef4444;
+  --priority-medium: #f59e0b;
+  --priority-low: #10b981;
+}
+
+/* Global transition properties */
+* {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Styles
+-------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: 
+    radial-gradient(circle at top left, var(--bg-overlay-1) 0%, transparent 50%),
+    radial-gradient(circle at bottom right, var(--bg-overlay-2) 0%, transparent 50%),
+    linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 50%, var(--bg-gradient-3) 100%);
+  background-attachment: fixed;
+  color: var(--text-color);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: background 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Container and Header Styles
+-------------------------------------------------- */
+.todo-container {
+  background: var(--card-bg);
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 600px;
+  height: calc(100vh - 40px); /* Account for body padding */
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.8;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.app-header h1 {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.app-header .subtitle {
+  color: var(--subtitle-color);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.theme-toggle i {
+  font-size: 1.2rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .theme-toggle i {
+  transform: rotate(360deg);
+}
+
+/* Input and Button Styles
+-------------------------------------------------- */
+.input-with-button {
+  position: relative;
+  width: 100%;
+}
+
+#taskInput {
+  width: 100%;
+  padding: 12px 20px;
+  padding-right: 50px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  height: 50px;
+  background: var(--card-bg);
+}
+
+#taskInput:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-1px);
+}
+
+#addTaskButton {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+#addTaskButton:hover {
+  background: var(--primary-hover);
+}
+
+#addTaskButton i {
+  font-size: 1rem;
+}
+
+.input-with-button::after {
+  content: '';
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--primary-color), #818cf8, var(--primary-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.input-with-button:focus-within::after {
+  opacity: 0.1;
+}
+
+/* Task Options Styles
+-------------------------------------------------- */
+.todo-input {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+  align-items: flex-start;
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-options {
+  display: flex;
+  gap: 12px;
+}
+
+select,
+input[type="datetime-local"] {
+  appearance: none;
+  padding: 10px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-color);
+  background-color: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+select:hover,
+input[type="datetime-local"]:hover {
+  border-color: var(--primary-color);
+}
+
+select:focus,
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.task-priority,
+.task-category,
+.task-due-date {
+  flex: 1;
+}
+
+/* Filter and Sort Styles
+-------------------------------------------------- */
+.view-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+}
+
+.filters button {
+  background: transparent;
+  border: 2px solid transparent;
+  color: var(--text-color);
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.filters button:hover {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.filters button.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Task List Styles
+-------------------------------------------------- */
+.tasks-wrapper {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Important for Firefox */
+}
+
+#taskList {
+  list-style: none;
+  margin: 0;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex: 1;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
+}
+
+/* Custom scrollbar for WebKit browsers */
+#taskList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#taskList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#taskList::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  border: 2px solid transparent;
+}
+
+#taskList li {
+  background: var(--task-bg);
+  padding: 1rem;
+  border-radius: 16px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideIn 0.3s ease;
+}
+
+#taskList li:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow);
+}
+
+.task-content {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.task-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-details {
+  font-size: 0.9rem;
+  color: var(--completed-color);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.task-priority-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.priority-high {
+  background-color: var(--priority-high);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.priority-medium {
+  background-color: var(--priority-medium);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.priority-low {
+  background-color: var(--priority-low);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.task-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.task-buttons button {
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.complete-btn {
+  background: var(--primary-color);
+  color: white;
+}
+
+.complete-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  background: var(--delete-color);
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* Stats Section
+-------------------------------------------------- */
+.task-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.task-stats span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Empty State
+-------------------------------------------------- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--completed-color);
+  display: none;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Animations and Effects
+-------------------------------------------------- */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes slide-out {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slide-out {
+  animation: slide-out 0.3s ease-out forwards;
+}
+
+/* Smooth transition for completed tasks */
+.task-item.completed {
+  transition: opacity 0.5s ease,
+              background-color 0.5s ease,
+              transform 0.5s ease;
+}
+
+/* Responsive Design
+-------------------------------------------------- */
+@media (max-width: 640px) {
+  .todo-container {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+  
+  .task-options {
+    flex-direction: column;
+  }
+  
+  .view-options {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filters {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  #taskList li {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .task-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .task-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    text-align: center;
+  }
+  
+  .app-header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Add animation for the button click */
+@keyframes buttonPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.button-pulse {
+  animation: buttonPulse 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  animation: ripple 0.6s linear;
+}
+
+@keyframes success-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(-50%);
+  }
+  40% {
+    transform: translateY(-60%);
+  }
+  60% {
+    transform: translateY(-45%);
+  }
+}
+
+.success-bounce {
+  animation: success-bounce 0.5s ease-in-out;
+}
+
+/* Completed task styling */
+#taskList li.completed .task-title {
+  color: var(--completed-color);
+  text-decoration: line-through;
+}
+
+#taskList li.completed {
+  background: var(--card-bg);
+  opacity: 0.8;
+}
