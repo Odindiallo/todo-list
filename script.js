@@ -15,8 +15,24 @@ const completedTasks = document.getElementById('completedTasks');
 const pendingTasks = document.getElementById('pendingTasks');
 const themeToggle = document.getElementById('themeToggle');
 
-// Load tasks from local storage when the page loads
+// API endpoints
+const API_BASE_URL = 'http://localhost:5000/api';
+
+// Load tasks from backend when the page loads
 document.addEventListener('DOMContentLoaded', loadTasks);
+
+async function loadTasks() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/tasks`);
+    const tasks = await response.json();
+    taskList.innerHTML = '';
+    tasks.forEach(appendTaskToUI);
+    updateEmptyState();
+    updateTaskStats();
+  } catch (error) {
+    console.error('Error loading tasks:', error);
+  }
+}
 
 // Add task event
 function handleAddTask(e) {
@@ -61,7 +77,7 @@ function setActiveFilter(activeButton) {
   activeButton.classList.add('active');
 }
 
-function addTask() {
+async function addTask() {
   const taskText = taskInput.value.trim();
   if (taskText === '') {
     addShakeAnimation();
@@ -70,42 +86,56 @@ function addTask() {
 
   // Create a new task
   const task = {
-    id: Date.now(),
     text: taskText,
     completed: false,
     priority: taskPriority.value,
     category: taskCategory.value,
-    dueDate: taskDueDate.value,
-    dateAdded: new Date().toISOString()
+    dueDate: taskDueDate.value
   };
 
-  // Add pulse animation to button
-  addTaskButton.classList.add('button-pulse');
-  setTimeout(() => addTaskButton.classList.remove('button-pulse'), 1000);
+  try {
+    // Add pulse animation to button
+    addTaskButton.classList.add('button-pulse');
+    setTimeout(() => addTaskButton.classList.remove('button-pulse'), 1000);
 
-  // Save to local storage
-  saveTaskToLocalStorage(task);
+    // Save to backend
+    const response = await fetch(`${API_BASE_URL}/tasks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(task),
+    });
 
-  // Add task to the UI
-  appendTaskToUI(task);
+    if (!response.ok) {
+      throw new Error('Failed to create task');
+    }
 
-  // Clear the input fields
-  taskInput.value = '';
-  taskPriority.value = 'medium';
-  taskCategory.value = 'personal';
-  taskDueDate.value = '';
-  
-  // Update stats and empty state
-  updateTaskStats();
-  updateEmptyState();
+    const newTask = await response.json();
 
-  addSuccessAnimation();
+    // Add task to the UI
+    appendTaskToUI(newTask);
+
+    // Clear the input fields
+    taskInput.value = '';
+    taskPriority.value = 'medium';
+    taskCategory.value = 'personal';
+    taskDueDate.value = '';
+    
+    // Update stats and empty state
+    updateTaskStats();
+    updateEmptyState();
+
+    addSuccessAnimation();
+  } catch (error) {
+    console.error('Error adding task:', error);
+  }
 }
 
 function appendTaskToUI(task) {
   // Create a new list item
   const li = document.createElement('li');
-  li.dataset.id = task.id;
+  li.dataset.id = task._id;
   
   // Create task content container
   const taskContent = document.createElement('div');
@@ -155,28 +185,55 @@ function appendTaskToUI(task) {
   completeButton.innerHTML = task.completed ? 
     '<i class="fas fa-undo"></i>' : 
     '<i class="fas fa-check"></i>';
-  completeButton.addEventListener('click', () => {
-    task.completed = !task.completed;
-    updateTaskInLocalStorage(task.id, task.completed);
-    li.classList.toggle('completed');
-    completeButton.innerHTML = task.completed ? 
-      '<i class="fas fa-undo"></i>' : 
-      '<i class="fas fa-check"></i>';
-    updateTaskStats();
+  completeButton.addEventListener('click', async () => {
+    try {
+      const updatedTask = { ...task, completed: !task.completed };
+      const response = await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update task');
+      }
+
+      task.completed = !task.completed;
+      li.classList.toggle('completed');
+      completeButton.innerHTML = task.completed ? 
+        '<i class="fas fa-undo"></i>' : 
+        '<i class="fas fa-check"></i>';
+      updateTaskStats();
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   });
 
   // Create a delete button
   const deleteButton = document.createElement('button');
   deleteButton.className = 'delete-btn';
   deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-  deleteButton.addEventListener('click', () => {
-    li.classList.add('slide-out');
-    setTimeout(() => {
-      removeTaskFromLocalStorage(task.id);
-      taskList.removeChild(li);
-      updateEmptyState();
-      updateTaskStats();
-    }, 300);
+  deleteButton.addEventListener('click', async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete task');
+      }
+
+      li.classList.add('slide-out');
+      setTimeout(() => {
+        taskList.removeChild(li);
+        updateEmptyState();
+        updateTaskStats();
+      }, 300);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   });
 
   // Append buttons to buttons container
@@ -245,55 +302,6 @@ function updateTaskStats() {
 function updateEmptyState() {
   const tasks = document.querySelectorAll('#taskList li');
   emptyState.style.display = tasks.length === 0 ? 'block' : 'none';
-}
-
-function saveTaskToLocalStorage(task) {
-  const tasks = getTasksFromLocalStorage();
-  tasks.push(task);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-function loadTasks() {
-  const tasks = getTasksFromLocalStorage();
-  tasks.forEach(appendTaskToUI);
-  updateTaskStats();
-  updateEmptyState();
-}
-
-function getTasksFromLocalStorage() {
-  const tasks = localStorage.getItem('tasks');
-  return tasks ? JSON.parse(tasks) : [];
-}
-
-function getTaskFromLocalStorage(taskId) {
-  const tasks = getTasksFromLocalStorage();
-  return tasks.find(task => task.id === parseInt(taskId));
-}
-
-function updateTaskInLocalStorage(taskId, completed) {
-  const tasks = getTasksFromLocalStorage();
-  const updatedTasks = tasks.map((task) =>
-    task.id === parseInt(taskId) ? { ...task, completed } : task
-  );
-  localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-}
-
-function removeTaskFromLocalStorage(taskId) {
-  const tasks = getTasksFromLocalStorage();
-  const updatedTasks = tasks.filter((task) => task.id !== parseInt(taskId));
-  localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-}
-
-function addShakeAnimation() {
-  const input = document.getElementById('taskInput');
-  input.classList.add('shake');
-  setTimeout(() => input.classList.remove('shake'), 300);
-}
-
-function addSuccessAnimation() {
-  const button = document.getElementById('addTaskButton');
-  button.classList.add('success-bounce');
-  setTimeout(() => button.classList.remove('success-bounce'), 500);
 }
 
 // Theme switching
@@ -397,3 +405,15 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+function addShakeAnimation() {
+  const input = document.getElementById('taskInput');
+  input.classList.add('shake');
+  setTimeout(() => input.classList.remove('shake'), 300);
+}
+
+function addSuccessAnimation() {
+  const button = document.getElementById('addTaskButton');
+  button.classList.add('success-bounce');
+  setTimeout(() => button.classList.remove('success-bounce'), 500);
+}
