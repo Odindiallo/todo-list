@@ -40,7 +40,7 @@ A sleek and feature-rich todo list application built with modern web technologie
 
 ### Frontend
 - Modern JavaScript (ES6+)
-- Responsive CSS with Flexbox
+- Responsive CSS with CSS Flexbox
 - Material Design Icons
 - Custom animations and transitions
 - Dynamic theme switching
