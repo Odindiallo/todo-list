@@ -9,68 +9,71 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="todo-container">
-    <div class="app-header">
-      <div class="header-top">
-        <h1><i class="fas fa-check-double"></i> Alfa List</h1>
-        <button id="themeToggle" class="theme-toggle">
-          <i class="fas fa-moon"></i>
-        </button>
-      </div>
-      <p class="subtitle">Stay organized, get more done</p>
-    </div>
-    
-    <div class="todo-input">
-      <div class="input-group">
-        <div class="input-with-button">
-          <input type="text" id="taskInput" placeholder="What needs to be done?">
-          <button id="addTaskButton">
-            <i class="fas fa-plus"></i>
+  <div class="container">
+    <div id="notification" class="notification"></div>
+    <div class="todo-container">
+      <div class="app-header">
+        <div class="header-top">
+          <h1><i class="fas fa-check-double"></i> Alfa List</h1>
+          <button id="themeToggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
           </button>
         </div>
-        <div class="task-options">
-          <select id="taskPriority" class="task-priority">
-            <option value="low">Low Priority</option>
-            <option value="medium" selected>Medium Priority</option>
-            <option value="high">High Priority</option>
-          </select>
-          <select id="taskCategory" class="task-category">
-            <option value="personal">Personal</option>
-            <option value="work">Work</option>
-            <option value="shopping">Shopping</option>
-            <option value="other">Other</option>
-          </select>
-          <input type="datetime-local" id="taskDueDate" class="task-due-date">
+        <p class="subtitle">Stay organized, get more done</p>
+      </div>
+      
+      <div class="todo-input">
+        <div class="input-group">
+          <div class="input-with-button">
+            <input type="text" id="taskInput" placeholder="What needs to be done?">
+            <button id="addTaskButton">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <div class="task-options">
+            <select id="taskPriority" class="task-priority">
+              <option value="low">Low Priority</option>
+              <option value="medium" selected>Medium Priority</option>
+              <option value="high">High Priority</option>
+            </select>
+            <select id="taskCategory" class="task-category">
+              <option value="personal">Personal</option>
+              <option value="work">Work</option>
+              <option value="shopping">Shopping</option>
+              <option value="other">Other</option>
+            </select>
+            <input type="datetime-local" id="taskDueDate" class="task-due-date">
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="view-options">
-      <div class="filters">
-        <button id="filterAll" class="active">All</button>
-        <button id="filterPending">Active</button>
-        <button id="filterCompleted">Completed</button>
+      <div class="view-options">
+        <div class="filters">
+          <button id="filterAll" class="active">All</button>
+          <button id="filterPending">Active</button>
+          <button id="filterCompleted">Completed</button>
+        </div>
+        <div class="sort-options">
+          <select id="sortTasks">
+            <option value="dateAdded">Date Added</option>
+            <option value="dueDate">Due Date</option>
+            <option value="priority">Priority</option>
+            <option value="category">Category</option>
+          </select>
+        </div>
       </div>
-      <div class="sort-options">
-        <select id="sortTasks">
-          <option value="dateAdded">Date Added</option>
-          <option value="dueDate">Due Date</option>
-          <option value="priority">Priority</option>
-          <option value="category">Category</option>
-        </select>
-      </div>
-    </div>
 
-    <div class="tasks-wrapper">
-      <div class="task-stats">
-        <span id="totalTasks">Total: 0</span>
-        <span id="completedTasks">Completed: 0</span>
-        <span id="pendingTasks">Pending: 0</span>
-      </div>
-      <ul id="taskList"></ul>
-      <div id="emptyState" class="empty-state">
-        <i class="fas fa-clipboard-list"></i>
-        <p>No tasks yet! Add a task to get started.</p>
+      <div class="tasks-wrapper">
+        <div class="task-stats">
+          <span id="totalTasks">Total: 0</span>
+          <span id="completedTasks">Completed: 0</span>
+          <span id="pendingTasks">Pending: 0</span>
+        </div>
+        <ul id="taskList"></ul>
+        <div id="emptyState" class="empty-state">
+          <i class="fas fa-clipboard-list"></i>
+          <p>No tasks yet! Add a task to get started.</p>
+        </div>
       </div>
     </div>
   </div>

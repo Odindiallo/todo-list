@@ -14,6 +14,7 @@ const totalTasks = document.getElementById('totalTasks');
 const completedTasks = document.getElementById('completedTasks');
 const pendingTasks = document.getElementById('pendingTasks');
 const themeToggle = document.getElementById('themeToggle');
+const notification = document.getElementById('notification');
 
 // API endpoints
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -81,6 +82,14 @@ async function addTask() {
   const taskText = taskInput.value.trim();
   if (taskText === '') {
     addShakeAnimation();
+    showNotification('Please enter a task!', 'warning');
+    return;
+  }
+
+  // Check for duplicate task
+  if (isTaskDuplicate(taskText)) {
+    addShakeAnimation();
+    showNotification('This task already exists!', 'error');
     return;
   }
 
@@ -126,9 +135,11 @@ async function addTask() {
     updateTaskStats();
     updateEmptyState();
 
-    addSuccessAnimation();
+    // Show success notification
+    showNotification('Task added successfully!', 'success');
   } catch (error) {
     console.error('Error adding task:', error);
+    showNotification('Failed to add task. Please try again.', 'error');
   }
 }
 
@@ -187,6 +198,9 @@ function appendTaskToUI(task) {
     '<i class="fas fa-check"></i>';
   completeButton.addEventListener('click', async () => {
     try {
+      // Add completing animation to button
+      completeButton.classList.add('completing');
+      
       const updatedTask = { ...task, completed: !task.completed };
       const response = await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
         method: 'PUT',
@@ -200,14 +214,24 @@ function appendTaskToUI(task) {
         throw new Error('Failed to update task');
       }
 
-      task.completed = !task.completed;
-      li.classList.toggle('completed');
-      completeButton.innerHTML = task.completed ? 
-        '<i class="fas fa-undo"></i>' : 
-        '<i class="fas fa-check"></i>';
-      updateTaskStats();
+      // Add completing animation to task
+      li.classList.add('completing');
+      
+      // Wait for animation to finish before updating UI
+      setTimeout(() => {
+        li.classList.toggle('completed');
+        completeButton.innerHTML = updatedTask.completed ? 
+          '<i class="fas fa-undo"></i>' : 
+          '<i class="fas fa-check"></i>';
+        li.classList.remove('completing');
+        completeButton.classList.remove('completing');
+        updateTaskStats();
+      }, 600);
+
     } catch (error) {
       console.error('Error updating task:', error);
+      // Remove animation if there's an error
+      completeButton.classList.remove('completing');
     }
   });
 
@@ -217,6 +241,9 @@ function appendTaskToUI(task) {
   deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
   deleteButton.addEventListener('click', async () => {
     try {
+      // Add deleting animation to button
+      deleteButton.classList.add('deleting');
+      
       const response = await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
         method: 'DELETE',
       });
@@ -225,14 +252,20 @@ function appendTaskToUI(task) {
         throw new Error('Failed to delete task');
       }
 
-      li.classList.add('slide-out');
+      // Add deleting animation to task
+      li.classList.add('deleting');
+      
+      // Wait for animation to finish before removing
       setTimeout(() => {
-        taskList.removeChild(li);
+        li.remove();
         updateEmptyState();
         updateTaskStats();
-      }, 300);
+      }, 500);
+
     } catch (error) {
       console.error('Error deleting task:', error);
+      // Remove animation if there's an error
+      deleteButton.classList.remove('deleting');
     }
   });
 
@@ -403,6 +436,33 @@ style.textContent = `
       opacity: 0;
     }
   }
+
+  @keyframes completing {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .completing {
+    animation: completing 0.6s ease-out;
+  }
+
+  @keyframes deleting {
+    to {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+
+  .deleting {
+    animation: deleting 0.5s ease-out forwards;
+  }
 `;
 document.head.appendChild(style);
 
@@ -416,4 +476,31 @@ function addSuccessAnimation() {
   const button = document.getElementById('addTaskButton');
   button.classList.add('success-bounce');
   setTimeout(() => button.classList.remove('success-bounce'), 500);
+}
+
+// Show notification function
+function showNotification(message, type = 'error') {
+  notification.textContent = message;
+  notification.className = `notification ${type}`;
+  notification.classList.add('show');
+  
+  // Add shake animation for errors
+  if (type === 'error') {
+    notification.classList.add('shake');
+    setTimeout(() => notification.classList.remove('shake'), 500);
+  }
+  
+  // Hide notification after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000);
+}
+
+// Check if task already exists
+function isTaskDuplicate(taskText) {
+  const tasks = Array.from(taskList.children);
+  return tasks.some(task => {
+    const taskTitle = task.querySelector('.task-title');
+    return taskTitle && taskTitle.textContent.trim().toLowerCase() === taskText.toLowerCase();
+  });
 }

@@ -1,57 +1,196 @@
 /* CSS Variables and Root Styles
 -------------------------------------------------- */
 :root {
-  /* Light Theme Variables */
-  --primary-color: #6366f1;
-  --primary-hover: #4f46e5;
-  --text-color: #1f2937;
-  --border-color: #e5e7eb;
-  --card-bg: #ffffff;
-  --completed-color: #9ca3af;
-  --error-color: #ef4444;
-  --success-color: #10b981;
-  /* Light theme background */
-  --bg-gradient-1: #4338ca;
-  --bg-gradient-2: #6366f1;
-  --bg-gradient-3: #818cf8;
-  --bg-overlay-1: rgba(99, 102, 241, 0.15);
-  --bg-overlay-2: rgba(67, 56, 202, 0.15);
-  --task-bg: #f9fafb;
-  --subtitle-color: #6b7280;
-  --delete-color: #ef4444;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --priority-high: #ef4444;
-  --priority-medium: #f59e0b;
-  --priority-low: #10b981;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Light Theme Variables - Following Material Design light theme guidelines */
+  --primary-color: #344CCA;    /* Main action color */
+  --primary-hover: #171EA4;    /* Darker shade for hover */
+  --text-color: #1A1A2E;       /* Not pure black for better readability */
+  --text-secondary: #4A4A5F;   /* Secondary text color */
+  --border-color: #E8E8ED;     /* Slightly darker border for better definition */
+  --card-bg: #F8F8FA;          /* Slightly off-white for cards */
+  --completed-color: #A24B68;  /* Mauve for completed tasks */
+  --error-color: #53294C;      /* Error states */
+  --success-color: #0F24E0;    /* Success states */
+  
+  /* Background gradients - more subtle and softer */
+  --bg-gradient-1: #F0F0F5;    /* Light gray start */
+  --bg-gradient-2: #E8E8F0;    /* Slightly darker middle */
+  --bg-gradient-3: #E0E0EB;    /* Slightly more saturated end */
+  --bg-overlay-1: rgba(52, 76, 202, 0.04);  /* Slightly increased overlay */
+  --bg-overlay-2: rgba(23, 30, 164, 0.03);  /* Slightly increased overlay */
+  
+  /* UI Elements */
+  --task-bg: rgba(255, 255, 255, 0.85);    /* Slightly more opaque */
+  --subtitle-color: #4A4A5F;               /* Secondary text */
+  --delete-color: #A24B68;                 /* Delete action */
+  
+  /* Shadows with slightly increased blue tint */
+  --shadow-sm: 0 2px 4px rgba(52, 76, 202, 0.08);
+  --shadow: 0 4px 6px rgba(52, 76, 202, 0.12);
+  --shadow-lg: 0 8px 16px rgba(52, 76, 202, 0.1);
+  
+  /* Priority indicators */
+  --priority-high: #53294C;    /* Dark purple for high */
+  --priority-medium: #344CCA;  /* Primary blue for medium */
+  --priority-low: #171EA4;     /* Dark blue for low */
+  
+  /* Input and interactive elements */
+  --input-bg: rgba(255, 255, 255, 0.92);    /* More opaque for better visibility */
+  --hover-bg: rgba(52, 76, 202, 0.05);      /* Slightly increased hover state */
+  --active-bg: rgba(52, 76, 202, 0.09);     /* Slightly increased active state */
+  
+  /* Dark Theme Variables - Following Material Design dark theme guidelines */
+  --text-color-dark: #E1E1E6;      /* Light gray for primary text - 87% white */
+  --text-secondary-dark: #A9A9B2;   /* Lighter gray for secondary text - 60% white */
+  --border-color-dark: #2D2D3B;    /* Subtle border color */
+  --card-bg-dark: #1E1E2E;         /* Dark surface color - not pure black */
+  --completed-color-dark: #A24B68; /* Mauve for completed tasks */
+  
+  /* Dark theme background - subtle gradient */
+  --bg-gradient-1-dark: #151520;   /* Slightly lighter than pure black */
+  --bg-gradient-2-dark: #1A1A2E;   /* Dark navy */
+  --bg-gradient-3-dark: #1E1E3A;   /* Slightly lighter navy */
+  --bg-overlay-1-dark: rgba(52, 76, 202, 0.08);  /* Very subtle primary color overlay */
+  --bg-overlay-2-dark: rgba(23, 30, 164, 0.05);  /* Even more subtle overlay */
+  
+  /* Dark UI Elements */
+  --task-bg-dark: rgba(40, 40, 60, 0.6);        /* Semi-transparent dark surface */
+  --subtitle-color-dark: #A9A9B2;                /* Secondary text color */
+  --delete-color-dark: #A24B68;                  /* Mauve for delete action */
+  
+  /* Dark mode shadows - more subtle */
+  --shadow-sm-dark: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.25);
+  --shadow-lg-dark: 0 8px 16px rgba(0, 0, 0, 0.3);
+  
+  /* Priority indicators in dark mode - more vibrant */
+  --priority-high-dark: #A24B68;     /* Mauve for high */
+  --priority-medium-dark: #4A5CDE;   /* Slightly lighter blue for medium */
+  --priority-low-dark: #2E3CAA;      /* Darker blue for low */
+  
+  /* Input and interactive elements */
+  --input-bg-dark: rgba(40, 40, 60, 0.8);      /* Slightly darker than task-bg */
+  --hover-bg-dark: rgba(52, 76, 202, 0.15);    /* Subtle hover state */
+  --active-bg-dark: rgba(52, 76, 202, 0.25);   /* Slightly more visible active state */
 }
 
 [data-theme="dark"] {
-  /* Dark Theme Variables */
-  --text-color: #e5e7eb;
-  --border-color: #374151;
-  --card-bg: #1f2937;
-  --completed-color: #6b7280;
-  /* Dark theme background */
-  --bg-gradient-1: #0f172a;
-  --bg-gradient-2: #1e1b4b;
-  --bg-gradient-3: #312e81;
-  --bg-overlay-1: rgba(99, 102, 241, 0.05);
-  --bg-overlay-2: rgba(67, 56, 202, 0.05);
-  --task-bg: #374151;
-  --subtitle-color: #9ca3af;
-  --delete-color: #dc2626;
-  --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.1);
-  --shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
-  --priority-high: #ef4444;
-  --priority-medium: #f59e0b;
-  --priority-low: #10b981;
+  /* Dark Theme Variables - Following Material Design dark theme guidelines */
+  --text-color: var(--text-color-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --border-color: var(--border-color-dark);
+  --card-bg: var(--card-bg-dark);
+  --completed-color: var(--completed-color-dark);
+  
+  /* Dark theme background - subtle gradient */
+  --bg-gradient-1: var(--bg-gradient-1-dark);
+  --bg-gradient-2: var(--bg-gradient-2-dark);
+  --bg-gradient-3: var(--bg-gradient-3-dark);
+  --bg-overlay-1: var(--bg-overlay-1-dark);
+  --bg-overlay-2: var(--bg-overlay-2-dark);
+  
+  /* Dark UI Elements */
+  --task-bg: var(--task-bg-dark);
+  --subtitle-color: var(--subtitle-color-dark);
+  --delete-color: var(--delete-color-dark);
+  
+  /* Dark mode shadows - more subtle */
+  --shadow-sm: var(--shadow-sm-dark);
+  --shadow: var(--shadow-dark);
+  --shadow-lg: var(--shadow-lg-dark);
+  
+  /* Priority indicators in dark mode - more vibrant */
+  --priority-high: var(--priority-high-dark);
+  --priority-medium: var(--priority-medium-dark);
+  --priority-low: var(--priority-low-dark);
+  
+  /* Input and interactive elements */
+  --input-bg: var(--input-bg-dark);
+  --hover-bg: var(--hover-bg-dark);
+  --active-bg: var(--active-bg-dark);
+}
+
+[data-theme="dark"] .todo-container {
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-lg),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] #taskInput {
+  background: var(--input-bg);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] #taskInput:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(52, 76, 202, 0.2);
+}
+
+[data-theme="dark"] .task-item {
+  background: var(--task-bg);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .task-item:hover {
+  background: rgba(40, 40, 60, 0.8);
+}
+
+[data-theme="dark"] .filter-btn {
+  background: var(--task-bg);
+}
+
+[data-theme="dark"] .filter-btn:hover {
+  background: var(--hover-bg);
+}
+
+[data-theme="dark"] .filter-btn.active {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .complete-btn {
+  background: var(--primary-color);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .complete-btn:hover {
+  opacity: 1;
+}
+
+[data-theme="dark"] .delete-btn {
+  background: rgba(162, 75, 104, 0.2);  /* Subtle mauve background */
+  color: var(--delete-color);
+}
+
+[data-theme="dark"] .delete-btn:hover {
+  background: rgba(162, 75, 104, 0.3);
+}
+
+/* Update task status styles for dark mode */
+[data-theme="dark"] .task-priority-indicator.priority-high {
+  background: var(--priority-high);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .task-priority-indicator.priority-medium {
+  background: var(--priority-medium);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .task-priority-indicator.priority-low {
+  background: var(--priority-low);
+  opacity: 0.9;
+}
+
+/* Update completed task style in dark mode */
+[data-theme="dark"] .task-item.completed {
+  background: rgba(40, 40, 60, 0.4);
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .task-item.completed .task-content {
+  color: var(--completed-color);
 }
 
 /* Global transition properties */
@@ -92,13 +231,14 @@ body {
 .todo-container {
   background: var(--card-bg);
   border-radius: 24px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg),
+              0 0 0 1px rgba(52, 76, 202, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(213, 213, 219, 0.1);
   width: 100%;
   max-width: 600px;
   height: calc(100vh - 40px); /* Account for body padding */
   padding: 2rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -182,22 +322,24 @@ body {
   width: 100%;
   padding: 12px 20px;
   padding-right: 50px;
-  border: 2px solid var(--border-color);
+  border: 2px solid transparent;
   border-radius: 12px;
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
   color: var(--text-color);
   height: 50px;
-  background: var(--card-bg);
+  background: var(--input-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 #taskInput:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 4px rgba(52, 76, 202, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateY(-1px);
+  background: #FFFFFF;
 }
 
 #addTaskButton {
@@ -217,10 +359,13 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 #addTaskButton:hover {
   background: var(--primary-hover);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
 }
 
 #addTaskButton i {
@@ -312,8 +457,8 @@ input[type="datetime-local"]:focus {
 }
 
 .filters button {
-  background: transparent;
-  border: 2px solid transparent;
+  background: var(--task-bg);
+  border: 1px solid transparent;
   color: var(--text-color);
   padding: 8px 16px;
   border-radius: 10px;
@@ -323,13 +468,11 @@ input[type="datetime-local"]:focus {
   font-weight: 500;
 }
 
-.filters button:hover {
-  background: rgba(99, 102, 241, 0.1);
-}
-
+.filters button:hover,
 .filters button.active {
   background: var(--primary-color);
   color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Task List Styles
@@ -375,7 +518,8 @@ input[type="datetime-local"]:focus {
   background: var(--task-bg);
   padding: 1rem;
   border-radius: 16px;
-  border: 2px solid var(--border-color);
+  border: 1px solid rgba(213, 213, 219, 0.1);
+  box-shadow: var(--shadow-sm);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -385,8 +529,9 @@ input[type="datetime-local"]:focus {
 
 #taskList li:hover {
   transform: translateY(-2px);
-  border-color: var(--primary-color);
   box-shadow: var(--shadow);
+  background: #FFFFFF;
+  border-color: rgba(52, 76, 202, 0.1);
 }
 
 .task-content {
@@ -451,16 +596,19 @@ input[type="datetime-local"]:focus {
   align-items: center;
   justify-content: center;
   padding: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .complete-btn {
   background: var(--primary-color);
   color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .complete-btn:hover {
   background: var(--primary-hover);
-  transform: scale(1.05);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
 }
 
 .delete-btn {
@@ -554,6 +702,104 @@ input[type="datetime-local"]:focus {
   transition: opacity 0.5s ease,
               background-color 0.5s ease,
               transform 0.5s ease;
+}
+
+/* Animations for task interactions */
+@keyframes delete-animation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.9) rotate(-2deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0) rotate(-5deg);
+    opacity: 0;
+  }
+}
+
+@keyframes complete-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.task-item {
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.task-item.deleting {
+  animation: delete-animation 0.5s ease-in forwards;
+}
+
+.task-item.completing {
+  animation: complete-animation 0.6s ease-out;
+}
+
+/* Icon Animations */
+@keyframes trash-open {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2) translateY(-2px);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes check-mark {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3) rotate(15deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.delete-btn:hover i {
+  animation: trash-open 0.3s ease-in-out;
+  color: var(--delete-color);
+}
+
+.delete-btn.deleting i {
+  animation: trash-open 0.5s ease-in-out infinite;
+}
+
+.complete-btn:hover i {
+  animation: check-mark 0.3s ease-in-out;
+  color: var(--success-color);
+}
+
+.complete-btn.completing i {
+  animation: check-mark 0.5s ease-in-out;
+}
+
+/* Make icons inside buttons more prominent */
+.task-buttons button i {
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: inline-block;
+}
+
+/* Ensure the icons have enough space to animate */
+.task-buttons button {
+  padding: 8px;
+  overflow: visible;
 }
 
 /* Responsive Design
@@ -664,4 +910,52 @@ input[type="datetime-local"]:focus {
 #taskList li.completed {
   background: var(--card-bg);
   opacity: 0.8;
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: var(--shadow);
+  transform: translateX(200%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 300px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.error {
+  background-color: rgba(255, 87, 87, 0.1);
+  border-left: 4px solid #ff5757;
+}
+
+.notification.warning {
+  background-color: rgba(255, 169, 64, 0.1);
+  border-left: 4px solid #ffa940;
+}
+
+.notification.success {
+  background-color: rgba(75, 181, 67, 0.1);
+  border-left: 4px solid #4bb543;
+}
+
+@keyframes notification-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+.notification.shake {
+  animation: notification-shake 0.3s ease-in-out;
 }
